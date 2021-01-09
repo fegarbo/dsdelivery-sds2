@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().anyRequest().permitAll();
+		http.headers().frameOptions().disable();
 	}
 
 	//Configuração para liberar o Cors para o navegador trafegar dados entre dois ambientes (Heroku e front)
