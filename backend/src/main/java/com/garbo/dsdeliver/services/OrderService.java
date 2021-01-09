@@ -37,10 +37,18 @@ public class OrderService {
 		Order order = new Order(null, dto.getAddress(), dto.getLatitude(), dto.getLongitude(), 
 				Instant.now(), OrderStatus.PENDING);
 		for (ProductDTO p : dto.getProducts()) {
-			Product product = productRepository.getOne(p.getId()); //Cria uma entidade gerenciada pelo JPA para salvar as associações order/product
+			Product product = productRepository.getOne(p.getId()); //Cria uma entidade gerenciada pelo JPA para ser utilizada na criação das associações order/product
 			order.getProducts().add(product);
 		}
 		order = repository.save(order);
 		return new OrderDTO(order);		
-	}	
+	}
+	
+	@Transactional
+	public OrderDTO setDelivered(Long id){
+		Order order = repository.getOne(id);
+		order.setStatus(OrderStatus.DELIVERED);
+		order = repository.save(order);
+		return new OrderDTO(order);
+	}
 }
